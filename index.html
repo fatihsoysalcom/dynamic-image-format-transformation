@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Görsel Formatı Dinamik Dönüşüm Demostrasyonu</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; background-color: #f4f4f4; color: #333; }
+        .container { max-width: 900px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: #0056b3; }
+        .image-section { margin-bottom: 30px; padding: 20px; border: 1px solid #eee; border-radius: 5px; background-color: #f9f9f9; }
+        .image-section img { max-width: 100%; height: auto; display: block; margin-top: 15px; border: 1px solid #ddd; border-radius: 4px; }
+        .image-section p { font-size: 0.9em; color: #555; }
+        code { background-color: #e0e0e0; padding: 2px 4px; border-radius: 3px; font-family: monospace; }
+        .note { color: #d9534f; font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Görsel Formatı Dinamik Dönüşüm Demostrasyonu</h1>
+        <p>Bu örnek, Cloudinary gibi görsel işleme servislerinin URL parametreleri aracılığıyla görselleri nasıl dinamik olarak dönüştürebildiğini ve statik bir CDN'den sunulan görsellerde bu tür parametrelerin neden genellikle işe yaramadığını göstermektedir. Shopify gibi platformlarda karşılaşılan <code>format=jpg</code> sorununun temelini anlamak için bu fark önemlidir.</p>
+
+        <div class="image-section">
+            <h2>Cloudinary ile Dinamik Görsel Dönüşüm</h2>
+            <p>Cloudinary, URL'deki parametreleri (<code>f_auto</code>, <code>f_webp</code>, <code>f_jpg</code> vb.) kullanarak görselleri anında farklı formatlara dönüştürebilir. Tarayıcınızın geliştirici araçlarını (Network sekmesi) kullanarak her bir görselin gerçek formatını kontrol edebilirsiniz.</p>
+
+            <h3>Orijinal Görsel (JPG)</h3>
+            <p>URL: <code>https://res.cloudinary.com/demo/image/upload/sample.jpg</code></p>
+            <img src="https://res.cloudinary.com/demo/image/upload/sample.jpg" alt="Orijinal JPG Görsel">
+            <!-- This image is served in its original JPG format. -->
+
+            <h3>Otomatik Format ve Kalite (f_auto, q_auto)</h3>
+            <p>Cloudinary, tarayıcı desteğine göre en uygun formatı (örneğin WebP veya AVIF) ve kaliteyi otomatik olarak seçer.</p>
+            <p>URL: <code>https://res.cloudinary.com/demo/image/upload/f_auto,q_auto/sample.jpg</code></p>
+            <img src="https://res.cloudinary.com/demo/image/upload/f_auto,q_auto/sample.jpg" alt="Otomatik Format Görsel">
+            <!-- Cloudinary dynamically serves the image in the best format (e.g., WebP for modern browsers) and optimized quality. -->
+
+            <h3>WebP Formatına Zorla (f_webp)</h3>
+            <p>Görseli WebP formatına dönüştürmek için <code>f_webp</code> parametresi kullanılır. Bu, dosya boyutunu önemli ölçüde azaltabilir.</p>
+            <p>URL: <code>https://res.cloudinary.com/demo/image/upload/f_webp,q_auto/sample.jpg</code></p>
+            <img src="https://res.cloudinary.com/demo/image/upload/f_webp,q_auto/sample.jpg" alt="WebP Formatında Görsel">
+            <!-- Cloudinary forces the image to WebP format. -->
+
+            <h3>JPG Formatına Zorla (f_jpg)</h3>
+            <p>Görseli JPG formatına dönüştürmek için <code>f_jpg</code> parametresi kullanılır. Bu, makalede bahsedilen <code>format=jpg</code> senaryosuna benzer bir etki yaratır.</p>
+            <p>URL: <code>https://res.cloudinary.com/demo/image/upload/f_jpg,q_auto/sample.jpg</code></p>
+            <img src="https://res.cloudinary.com/demo/image/upload/f_jpg,q_auto/sample.jpg" alt="JPG Formatında Görsel">
+            <!-- Cloudinary forces the image to JPG format, demonstrating dynamic format control. -->
+        </div>
+
+        <div class="image-section">
+            <h2>Statik CDN / Shopify Benzeri Görsel Sunumu</h2>
+            <p>Shopify gibi platformlar veya basit statik CDN'ler, URL'deki <code>?format=jpg</code> veya benzeri parametreleri genellikle görseli dönüştürmek için kullanmaz. Görsel, sunucuda depolandığı orijinal formatında (veya önceden dönüştürülmüş bir versiyonunda) sunulur. URL'ye eklenen parametreler genellikle göz ardı edilir veya sadece izleme amaçlı kullanılır.</p>
+            <p>Aşağıdaki örnekte, bir PNG görseli statik bir kaynaktan çekilmiştir. URL'ye <code>?format=jpg</code> eklesek bile, görselin formatı değişmeyecektir çünkü sunucu bu parametreyi dinamik dönüşüm için işlemez.</p>
+
+            <h3>Orijinal Statik PNG Görsel</h3>
+            <p>URL: <code>https://raw.githubusercontent.com/mdn/learning-area/main/html/multimedia-and-embedding/images-in-html/dinosaur.png</code></p>
+            <img src="https://raw.githubusercontent.com/mdn/learning-area/main/html/multimedia-and-embedding/images-in-html/dinosaur.png" alt="Statik PNG Görsel">
+            <!-- This image is a static PNG. Adding ?format=jpg to its URL will not change its format. -->
+
+            <h3>Statik PNG Görsel (format=jpg parametresi ile)</h3>
+            <p>URL: <code>https://raw.githubusercontent.com/mdn/learning-area/main/html/multimedia-and-embedding/images-in-html/dinosaur.png?format=jpg</code></p>
+            <img src="https://raw.githubusercontent.com/mdn/learning-area/main/html/multimedia-and-embedding/images-in-html/dinosaur.png?format=jpg" alt="Statik PNG Görsel (format=jpg ile)">
+            <p class="note"><strong>Not:</strong> Tarayıcınızın geliştirici araçlarında (Network sekmesi) bu görselin hala PNG olarak sunulduğunu göreceksiniz. URL'deki <code>?format=jpg</code> parametresi sunucu tarafından görseli dönüştürmek için işlenmemiştir.</p>
+            <!-- This demonstrates that adding a query parameter like ?format=jpg to a static CDN URL usually doesn't trigger server-side dynamic image transformation. The image remains PNG. -->
+        </div>
+    </div>
+</body>
+</html>
